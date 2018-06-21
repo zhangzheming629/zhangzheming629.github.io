@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search>
-  <entry>
-    <title><![CDATA[Hello World]]></title>
-    <url>%2F2018%2F06%2F19%2Fhello-world%2F</url>
-    <content type="text"><![CDATA[Hello world]]></content>
-  </entry>
+<search> 
+  
+    
+    <entry>
+      <title>Hello World</title>
+      <link href="/2018/06/19/hello-world/"/>
+      <url>/2018/06/19/hello-world/</url>
+      <content type="html"><![CDATA[<p>Hello world</p><p>从对github的了解和使用，购买域名以及DNS解析，个人博客终于搭建好了<br>我会这里记录自己工作以及生活上的点点滴滴，以及一些学习的心得。<br>Coding your  ambition!</p>]]></content>
+      
+      
+    </entry>
+    
+  
+  
 </search>
