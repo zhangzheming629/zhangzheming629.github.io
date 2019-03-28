@@ -365,6 +365,282 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhangzheming629@github.io/2019/03/28/Iview组件树形控件增删改/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="张哲铭">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Chirstopther">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/28/Iview组件树形控件增删改/" itemprop="url">Iview组件库树形控件增删改</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-28T21:57:22+08:00">
+                2019-03-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/28/Iview组件树形控件增删改/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/03/28/Iview组件树形控件增删改/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  572
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Iview组件库树形控件增删改"><a href="#Iview组件库树形控件增删改" class="headerlink" title="Iview组件库树形控件增删改"></a>Iview组件库树形控件增删改</h1><p>iview组件库中有个树组件tree，根据官方示例，通过自定义组件实现renderContent的效果，实现了树组件的增删改操作。</p>
+<p>实现的效果<br><img src="https://user-gold-cdn.xitu.io/2019/3/28/169c4b0cab49f27b?w=752&amp;h=780&amp;f=png&amp;s=420056" alt="tree"></p>
+<p>iview中tree示例<br><img src="https://user-gold-cdn.xitu.io/2019/3/28/169c4b077e168586?w=780&amp;h=1074&amp;f=png&amp;s=451801" alt="tree"><br>由iview官方文档我们可以知道，tree是有root、node、data组成。<br>root<array> 是根节点<br>node<object>:当前节点<br>data<object>:当前节点的数据</object></object></array></p>
+<h2 id="让我们开始用代码实现它"><a href="#让我们开始用代码实现它" class="headerlink" title="让我们开始用代码实现它"></a>让我们开始用代码实现它</h2><h3 id="tree-Component基本"><a href="#tree-Component基本" class="headerlink" title="tree Component基本"></a>tree Component基本</h3> &lt;Tree :data=”treeData” :render=”renderContent”
+
+
+<p>data是tree的一个props，用来生成tree的数据，类型是Array，默认值是[]。通过treeData给data赋值</p>
+<p>render是tree的一个props，用来自定义渲染内容<br>我们通过renderContent方法实现自定义的render效果</p>
+<blockquote>
+</blockquote>
+<pre><code>data () {
+return {
+ treeData: [],
+  // 树结构
+ treeList: null
+}
+</code></pre><blockquote>
+</blockquote>
+<pre><code>import TreeRender from &apos;./TreeRender&apos;
+export default {
+name: &apos;Column&apos;,
+components: {},
+data () {
+return {
+ treeData: [],
+  // 树结构
+  treeList: null
+}
+</code></pre><p>  },</p>
+<blockquote>
+</blockquote>
+<pre><code>renderContent (h, {root, node, data}) {
+  let that = this
+  return h(**TreeRenderRender**, {
+     props: {
+      treeRoot: root,
+      treeNode: node,
+      treeData: data
+    },
+    on: {
+      nodeAdd: (d) =&gt; that.handleAdd(d),
+      nodeEdit: (r, n, d) =&gt; that.handleEdit(r, n, d),
+      nodeDel: (r, n, d) =&gt; that.handleDelete(r, n, d),
+      nodeAfterEdit: (r, n, d) =&gt; that.handleAfterEdit(r, n, d)
+    }
+  })
+},
+</code></pre><blockquote>
+<pre><code>nodeAdd是添加方法
+nodeEdit是点击编辑后的方法
+nodeAfterEdit是编辑后失去焦点的方法
+nodeDel是删除的方法
+</code></pre></blockquote>
+<h3 id="render基本组件"><a href="#render基本组件" class="headerlink" title="render基本组件"></a>render基本组件</h3><blockquote>
+</blockquote>
+<pre><code>&lt;span&gt;
+&lt;span v-if=&quot;isEdit&quot;&gt;
+  &lt;input size=&quot;small&quot; v-model=&quot;treeData.title&quot; autofocus
+  @blur=&quot;nodeEditPass(treeRoot,treeNode,treeData)&quot;/&gt;
+&lt;/span&gt;
+&lt;template v-else&gt;
+&lt;span&gt;{{treeData.title}}&lt;/span&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+&lt;span v-show=&quot;!isEdit&quot;&gt;
+  &lt;Button type=&quot;info&quot; size=&quot;small&quot;  icon=&quot;md-add&quot; @click=&quot;nodeAdd(treeData)&quot;&gt;添加&lt;/Button&gt;
+  &lt;Button type=&quot;primary&quot; size=&quot;small&quot; icon=&quot;md-create&quot; @click=&quot;nodeEdit(treeRoot,treeNode,treeData)&quot;&gt;修改&lt;/Button&gt;
+  &lt;Button type=&quot;error&quot; size=&quot;small&quot; icon=&quot;md-close&quot; @click=&quot;nodeDel(treeRoot,treeNode,treeData)&quot;&gt;删除&lt;/Button&gt;
+&lt;/span&gt;
+&lt;/template&gt;
+&lt;/span&gt;
+</code></pre><blockquote>
+</blockquote>
+<blockquote>
+</blockquote>
+<p>   props: {<br>    // 树的根节点<br>    treeRoot: {<br>      type: Array<br>    },<br>    // 当前节点<br>    treeNode: {<br>      type: Object<br>    },<br>    // 当前节点的数据<br>    treeData: {<br>      type: Object<br>    }</p>
+<blockquote>
+</blockquote>
+<pre><code> nodeAdd (d) {
+  this.$emit(&apos;nodeAdd&apos;, d)
+},
+nodeEdit (r, n, d) {
+  this.isEdit = true
+  d.isEdit = this.isEdit
+  d.title = this.treeData.title
+  this.$set(d, &apos;isEdit&apos;, d.isEdit)
+  this.$set(d, &apos;title&apos;, d.title)
+  this.$emit(&apos;nodeEdit&apos;, r, n, d)
+},
+nodeEditPass (r, n, d) { // 编辑完成
+  this.isEdit = false
+  d.isEdit = this.isEdit
+  d.title = this.treeData.title
+  this.$set(d, &apos;isEdit&apos;, d.isEdit)
+  this.$set(d, &apos;title&apos;, d.title)
+  this.$emit(&apos;nodeAfterEdit&apos;, r, n, d)
+},
+nodeDel (r, n, d) {
+  this.$emit(&apos;nodeDel&apos;, r, n, d)
+}
+
+通过$emit的方式将增、改、删的操作抛给column组件
+</code></pre><h3 id="思考一下我们还缺少什么？"><a href="#思考一下我们还缺少什么？" class="headerlink" title="思考一下我们还缺少什么？"></a>思考一下我们还缺少什么？</h3><ol>
+<li>负责给绑定data的treeData</li>
+<li>因为data是Array，需要写一个递归方法</li>
+<li>增删改的方法的实现</li>
+</ol>
+<h4 id="详细代码见我的github"><a href="#详细代码见我的github" class="headerlink" title="详细代码见我的github"></a>详细代码见我的github</h4><p><a href="https://github.com/zhangzheming629/IView/tree/master/tree" target="_blank" rel="noopener">https://github.com/zhangzheming629/IView/tree/master/tree</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+    
+    
+    <div>
+      
+</div>
+ 
+	 <div>
+	 
+	 </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://zhangzheming629@github.io/2018/06/19/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -573,14 +849,32 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
             
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
             
 
           </nav>
@@ -662,7 +956,7 @@
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
-<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+<div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -683,7 +977,7 @@
   <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
 -->
 <div class="theme-info">
-  <span class="post-count">博客全站共62字</span>
+  <span class="post-count">博客全站共634字</span>
 </div>
 
 
